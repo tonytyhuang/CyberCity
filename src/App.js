@@ -11,7 +11,7 @@ function App() {
 
   useEffect(() => {
     setLoading(true);
-    const fetch = axios.get('/http://xkcd.com/info.0.json');
+    const fetch = axios.get('https://cors-anywhere.herokuapp.com/http://xkcd.com/info.0.json');
     fetch.then(response => {
       setComic(response.data)
       setLoading(false);
@@ -24,7 +24,7 @@ function App() {
 
   const getComic = (number) => { 
     setLoading(true);
-    axios.get(`/http://xkcd.com/${number}/info.0.json`)
+    axios.get(`https://cors-anywhere.herokuapp.com/http://xkcd.com/${number}/info.0.json`)
       .then(response => setComic(response.data))
       .catch(err => {
         setErr(err);
@@ -41,10 +41,8 @@ function App() {
   return (
     <div className="App">
       {comic.title}
-      <button disabled={true} onClick={() => {
-        if (comic.num > 1){
+      <button disabled={comic <= 1} onClick={() => {
         getComic(comic.num-1)
-        }
       }}>
         previous
       </button>
