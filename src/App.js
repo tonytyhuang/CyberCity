@@ -8,6 +8,7 @@ function App() {
   const [comic, setComic] = useState();
   const [err, setErr] = useState();
   const [loading, setLoading] = useState();
+  const [current, setCurrent] = useState();
 
   useEffect(() => {
     setLoading(true);
@@ -31,6 +32,31 @@ function App() {
       })
       .finally(() => setLoading(false));
   };
+
+  const getCurrComic = () => {
+    setLoading(true);
+    axios.get('https://cors-anywhere.herokuapp.com/http://xkcd.com/info.0.json')
+      .then(response => {
+        setComic(response.data);
+        setCurrent(response.data.num);
+        setLoading(false);
+      })
+      .catch(error => {
+        setErr(err);
+        setLoading(false);
+      });
+  }
+
+  const getRandom = () => {
+    const num = Math.floor(Math.random() * (current - 1)) + 1;
+    getComic(num);
+  }
+
+  useEffect(() => {
+    getCurrComic();
+  }, []);
+
+
   if (loading) {
     return <h1>Loading...</h1>
   }
@@ -41,13 +67,17 @@ function App() {
   return (
     <div className="App">
       {comic.title}
-      <button disabled={comic <= 1} onClick={() => {
+      <button disabled={comic.num <= 1} onClick={() => {
         getComic(comic.num-1)
       }}>
         previous
       </button>
-      <button onClick={() => getComic(comic.num+1)}>
+      <button disabled={comic.num == current} onClick={() =>{
+        getComic(comic.num+1)}}>
         next
+      </button>
+      <button onClick={() => getRandom()} >
+        random
       </button>
       <img src = {comic.img}/>
     </div>
