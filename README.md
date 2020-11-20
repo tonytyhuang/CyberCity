@@ -1,6 +1,19 @@
-# Getting Started with Create React App
+# View the Final Page
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+https://stratuscybercity.herokuapp.com/
+
+## How was it built?
+
+The web page was built in React and used the xkcd API to display comics. 
+
+## Functionality
+
+- Displays comics on each page
+- Navigate to previous and next comic with buttons
+- Display date of comic creation
+- Navigate to specific comics with URL
+- Random button to go to random comic strip
+- Responsive
 
 ## Available Scripts
 
