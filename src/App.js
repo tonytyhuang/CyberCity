@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="app">
       <Switch>
-        <Route path='/' component = {Comic} />
+        <Route path='/' exact component = {Comic} />
         <Route path='/:comicNum' component = {Comic} />
       </Switch>
     </div>

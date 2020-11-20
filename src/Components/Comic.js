@@ -40,20 +40,25 @@ const Comic = (props) => {
             setCurrent(response.data.num);
             setLoading(false);
         })
-        .catch(error => {
+        .catch(err => {
             setErr(err);
             setLoading(false);
         });
-    }
+    };
 
     const getRandom = () => {
+        console.log(current)
         const num = Math.floor(Math.random() * (current - 1)) + 1;
         getComic(num);
-    }
+    };
 
     useEffect(() => {
-        getCurrComic();
-    }, []);
+        if (comicNum == null){
+            getCurrComic();
+        }else {
+            getComic(comicNum)
+        }
+    }, [comicNum]);
 
     
 
