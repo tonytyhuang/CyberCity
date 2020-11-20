@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useLocation, useParams, Redirect } from 'react-router-dom';
 import './Comic.css'
 import axios from 'axios';
+import ReactGa from 'react-ga';
 
 const Comic = (props) => {
     const comicNum = props.match.params.comicNum;
@@ -11,6 +12,7 @@ const Comic = (props) => {
     const [current, setCurrent] = useState();
     const history = useHistory();
 
+    
     useEffect(() => {
         setLoading(true);
         const fetch = axios.get('https://cors-anywhere.herokuapp.com/http://xkcd.com/info.0.json');
