@@ -72,7 +72,9 @@ const Comic = (props) => {
 
 
     if (loading) {
-        return <h1>Loading...</h1>
+        return <div class="loader-wrapper">
+        <span class="loader"><span class="loader-inner"></span></span>
+    </div>
     };
     if(!comic){
         return <h1>Error</h1>;
@@ -89,22 +91,41 @@ const Comic = (props) => {
 
     return (
     <div className="Comic">
-        {comic.title}
-        Date: {comic.month}/{comic.day}/{comic.year}
-        <button disabled={comic.num <= 1} onClick={() => {
-            history.push(`/${comic.num - 1}`)
-        }}>
-            previous
-        </button>
-        <button disabled={comic.num === current} onClick={() =>{
-            history.push(`/${comic.num+1}`)
-        }}>
-            next
-        </button>
-        <button onClick={() => history.push('/random')} >
-            random
-        </button>
-        <img src = {comic.img}/>
+        <div class = "head">
+            <h1>{comic.title}</h1>
+            <h2>Date: {comic.month}/{comic.day}/{comic.year}</h2>
+            <div class = "buttons">
+                <button class = "left" id = "but" disabled={comic.num <= 1} onClick={() => {
+                    history.push(`/${comic.num - 1}`)
+                }}>
+                    previous
+                </button>
+                <button class = "left" id = "but" disabled={comic.num === current} onClick={() =>{
+                    history.push(`/${comic.num+1}`)
+                }}>
+                    next
+                </button>
+                <button id = "but" onClick={() => history.push('/random')} >
+                    random
+                </button>
+            </div>
+        </div>
+        <img src = {comic.img} title = {comic.alt} alt = {comic.title}/>
+        <div class = "buttons-bot">
+                <button id = "but" class = "left" disabled={comic.num <= 1} onClick={() => {
+                    history.push(`/${comic.num - 1}`)
+                }}>
+                    previous
+                </button>
+                <button id = "but" class = "left" disabled={comic.num === current} onClick={() =>{
+                    history.push(`/${comic.num+1}`)
+                }}>
+                    next
+                </button>
+                <button id = "but" onClick={() => history.push('/random')} >
+                    random
+                </button>
+            </div>
     </div>
   );
 }
