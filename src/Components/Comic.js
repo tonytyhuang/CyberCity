@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-//import './Components/Comic.css';
+import { useHistory, useLocation, useParams, Redirect } from 'react-router-dom';
+import './Comic.css'
 import axios from 'axios';
 
 const Comic = (props) => {
@@ -8,6 +9,7 @@ const Comic = (props) => {
     const [err, setErr] = useState();
     const [loading, setLoading] = useState();
     const [current, setCurrent] = useState();
+    const history = useHistory();
 
     useEffect(() => {
         setLoading(true);
@@ -46,16 +48,22 @@ const Comic = (props) => {
         });
     };
 
-    const getRandom = () => {
-        console.log(current)
-        const num = Math.floor(Math.random() * (current - 1)) + 1;
-        getComic(num);
-    };
+    
 
     useEffect(() => {
         if (comicNum == null){
             getCurrComic();
-        }else {
+        }else if (comicNum === 'random'){
+            setLoading(true);
+            setErr(null);
+            axios.get('https://cors-anywhere.herokuapp.com/http://xkcd.com/info.0.json')
+                .then(response => {
+                    const latest = response.data.num;
+                    const random = Math.floor(Math.random() * (latest - 1)) + 1;
+                    props.history.replace(`/${random}`);
+                })
+        }
+        else {
             getComic(comicNum)
         }
     }, [comicNum]);
@@ -65,9 +73,18 @@ const Comic = (props) => {
 
     if (loading) {
         return <h1>Loading...</h1>
-    }
-    if(!comic || err){
-        return <h1>Error</h1>
+    };
+    if(!comic){
+        return <h1>Error</h1>;
+    };
+
+    if (err){
+        if (err.response && err.response.status === 404 && comicNum !== undefined ){
+            console.log(err.response.status)
+            return (<Redirect to = "/"/>);
+        }
+        console.log("bye")
+        return <h1>Error</h1>;
     }
 
     return (
@@ -75,15 +92,16 @@ const Comic = (props) => {
         {comic.title}
         Date: {comic.month}/{comic.day}/{comic.year}
         <button disabled={comic.num <= 1} onClick={() => {
-            getComic(comic.num-1)
+            history.push(`/${comic.num - 1}`)
         }}>
             previous
         </button>
-        <button disabled={comic.num == current} onClick={() =>{
-            getComic(comic.num+1)}}>
+        <button disabled={comic.num === current} onClick={() =>{
+            history.push(`/${comic.num+1}`)
+        }}>
             next
         </button>
-        <button onClick={() => getRandom()} >
+        <button onClick={() => history.push('/random')} >
             random
         </button>
         <img src = {comic.img}/>
